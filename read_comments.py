@@ -1,6 +1,6 @@
 import argparse
 import re
-
+import json
 import pandas as pd
 
 
@@ -25,7 +25,7 @@ def main():
             c = c[c.subreddit.isin(subreddits)]
         comments.append(c)
     comments = pd.concat(comments, sort=True)
-
+    print(type(comments))
     # Do something with comments here
 
     # Store extracted comments
@@ -33,12 +33,15 @@ def main():
         target_file = '{}/comments_extracted_{}.json'.format(
             args.target_dir, re.findall(r'\d{4}-\d{2}', args.comments_file)[0]
         )
-        comments.to_json(
-            target_file,
-            orient='records',
-            lines=True
-        )
-
+ #       comments.to_json(
+ #           target_file,
+ #           orient='records',
+ #           lines=True
+ #       )
+        dictionary = comments.to_dict('dict')
+        print(type(dictionary))
+        with open(target_file, "w") as outfile:
+            json.dump(dictionary, outfile)
 
 if __name__ == '__main__':
     main()
