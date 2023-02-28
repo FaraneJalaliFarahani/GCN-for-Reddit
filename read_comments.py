@@ -1,8 +1,12 @@
 import argparse
 import re
 import json
+from networkx import ladder_graph
 import pandas as pd
+import spacy
 
+# Load English tokenizer, tagger, parser and NER
+nlp = spacy.load("en_core_web_sm")
 
 def main():
 
@@ -29,8 +33,9 @@ def main():
     # Do something with comments here
 
     # Store extracted comments
+    l=[]
     if args.target_dir:
-        target_file = '{}/comments_extracted_{}.json'.format(
+        target_file = '{}/comments_extracted_{}.txt'.format(
             args.target_dir, re.findall(r'\d{4}-\d{2}', args.comments_file)[0]
         )
  #       comments.to_json(
@@ -39,9 +44,18 @@ def main():
  #           lines=True
  #       )
         dictionary = comments.to_dict('dict')
-        print(type(dictionary))
-        with open(target_file, "w") as outfile:
-            json.dump(dictionary, outfile)
-
+        #all usernames 
+        for i in range (len(list(dictionary.values())[2])):
+            print(i)
+            doc = nlp(list(dictionary.values())[2][i])
+            temp_list = [chunk.text for chunk in doc.noun_chunks]
+            l += temp_list
+        #all cleaned body
+        #print(list(dictionary.values())[2])
+        #with open(target_file, "w") as outfile:
+        #    json.dump(dictionary, outfile)
+        file1 = open(target_file,"w")
+        file1.writelines(l)
+        file1.close() #to change file access modes
 if __name__ == '__main__':
     main()
