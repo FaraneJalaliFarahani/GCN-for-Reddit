@@ -7,6 +7,7 @@ import spacy
 
 # Load English tokenizer, tagger, parser and NER
 nlp = spacy.load("en_core_web_sm")
+black_list = ["i", "I", "you", "You", "YOU", "she", "She", "SHE", "he", "He", "HE", "it", "It", "IT", "our", "Our", "OUR", "they", "They", "THEY", "me", "Me", "ME", "him", "Him", "HIM", "her", "Her", "HER", "us", "Us", "US", "them", "Them", "THEM", "my", "My", "MY", "your", "Your", "YOUR", "his", "His", "HIS", "our", "Our", "OUR", "their", "Their", "THEIR", "mine", "Mine", "MINE", "myself", "Myself","MYSELF", "yourself", "Yourself", "YOURSELF", "himself", "Himself", "HIMSELF", "herslef", "Herself", "HERSELF", "itself", "Itself", "ITSELF," "ourselves", "Ourselves", "OURSELVES", "themselves", "Themselves", "THEMSELVES",  "yourselves", "Yourselves", "YOURSELVES", "this", "that"]
 
 def main():
 
@@ -46,16 +47,22 @@ def main():
         dictionary = comments.to_dict('dict')
         #all usernames 
         for i in range (len(list(dictionary.values())[2])):
-            print(i)
+            #print(i)
             doc = nlp(list(dictionary.values())[2][i])
-            temp_list = [chunk.text for chunk in doc.noun_chunks]
-            l += temp_list
+            for chunk in doc.noun_chunks:
+              for b in black_list:
+                if b not in chunk.text and len(chunk.text) > 3:
+                  temp_list = [chunk.text ]
+                  l += temp_list
+                  if i == 10:
+                     break
         #all cleaned body
         #print(list(dictionary.values())[2])
         #with open(target_file, "w") as outfile:
         #    json.dump(dictionary, outfile)
-        file1 = open(target_file,"w")
-        file1.writelines(l)
-        file1.close() #to change file access modes
+        with open(target_file, 'w') as fp:
+            for item in l:
+                # write each item on a new line
+                fp.write("%s\n" % item)
 if __name__ == '__main__':
     main()
