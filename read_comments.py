@@ -53,7 +53,7 @@ def main():
               if len(chunk.text) > 3:
                 concept_candidate = set(chunk.text.split())
                 if not bool(concept_candidate & black_list):
-                    temp_list = [chunk.text]
+                    temp_list = [chunk.text.encode('utf-8')]
                     l += temp_list
 
         #all cleaned body
