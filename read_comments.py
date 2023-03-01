@@ -55,8 +55,6 @@ def main():
                 if not bool(concept_candidate & black_list):
                     temp_list = [chunk.text]
                     l += temp_list
-            if i == 10:
-              break
         #all cleaned body
         #print(list(dictionary.values())[2])
         #with open(target_file, "w") as outfile:
