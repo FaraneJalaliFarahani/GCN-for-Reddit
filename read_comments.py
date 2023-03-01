@@ -8,7 +8,7 @@ import spacy
 # Load English tokenizer, tagger, parser and NER
 nlp = spacy.load("en_core_web_sm")
 black_list = ["i", "I", "you", "You", "YOU", "she", "She", "SHE", "he", "He", "HE", "it", "It", "IT", "our", "Our", "OUR", "they", "They", "THEY", "me", "Me", "ME", "him", "Him", "HIM", "her", "Her", "HER", "us", "Us", "US", "them", "Them", "THEM", "my", "My", "MY", "your", "Your", "YOUR", "his", "His", "HIS", "our", "Our", "OUR", "their", "Their", "THEIR", "mine", "Mine", "MINE", "myself", "Myself","MYSELF", "yourself", "Yourself", "YOURSELF", "himself", "Himself", "HIMSELF", "herslef", "Herself", "HERSELF", "itself", "Itself", "ITSELF," "ourselves", "Ourselves", "OURSELVES", "themselves", "Themselves", "THEMSELVES",  "yourselves", "Yourselves", "YOURSELVES", "this", "that"]
-
+black_list = set(black_list)
 def main():
 
     # Read arguments
@@ -50,12 +50,13 @@ def main():
             #print(i)
             doc = nlp(list(dictionary.values())[2][i])
             for chunk in doc.noun_chunks:
-              for b in black_list:
-                if b not in chunk.text and len(chunk.text) > 3:
-                  temp_list = [chunk.text ]
-                  l += temp_list
-                  if i == 10:
-                     break
+              if len(chunk.text) > 3:
+                concept_candidate = set(chunk.text.split())
+                if not bool(concept_candidate & black_list):
+                    temp_list = [chunk.text]
+                    l += temp_list
+            if i == 10:
+              break
         #all cleaned body
         #print(list(dictionary.values())[2])
         #with open(target_file, "w") as outfile:
