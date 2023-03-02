@@ -34,7 +34,7 @@ def main():
     # Do something with comments here
 
     # Store extracted comments
-    l=[]
+    dict_concepts = {}
     if args.target_dir:
         target_file = '{}/comments_extracted_{}.txt'.format(
             args.target_dir, re.findall(r'\d{4}-\d{2}', args.comments_file)[0]
@@ -53,16 +53,19 @@ def main():
               if len(chunk.text) > 3:
                 concept_candidate = set(chunk.text.split())
                 if not bool(concept_candidate & black_list):
-                    temp_list = [chunk.text.encode('utf-8')]
-                    l += temp_list
+                    tmp = chunk.text.encode('utf-8')
+                    if tmp in dict_concepts:
+                        dict_concepts[tmp] += 1
+                    else:
+                        dict_concepts[tmp] = 1
 
         #all cleaned body
         #print(list(dictionary.values())[2])
-        #with open(target_file, "w") as outfile:
-        #    json.dump(dictionary, outfile)
-        with open(target_file, 'w') as fp:
-            for item in l:
+        with open(target_file, "w") as outfile:
+            json.dump(dict_concepts, outfile)
+        #with open(target_file, 'w') as fp:
+            #for item in l:
                 # write each item on a new line
-                fp.write("%s\n" % item)
+                #fp.write("%s\n" % item)
 if __name__ == '__main__':
     main()
