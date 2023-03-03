@@ -53,7 +53,7 @@ def main():
               if len(chunk.text) > 3:
                 concept_candidate = set(chunk.text.split())
                 if not bool(concept_candidate & black_list):
-                    tmp = chunk.text.encode('utf-8')
+                    tmp = chunk.text
                     if tmp in dict_concepts:
                         dict_concepts[tmp] += 1
                     else:
