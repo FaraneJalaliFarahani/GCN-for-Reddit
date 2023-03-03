@@ -36,7 +36,7 @@ def main():
     # Store extracted comments
     dict_concepts = {}
     if args.target_dir:
-        target_file = '{}/comments_extracted_{}.txt'.format(
+        target_file = '{}/comments_extracted_political_{}.txt'.format(
             args.target_dir, re.findall(r'\d{4}-\d{2}', args.comments_file)[0]
         )
  #       comments.to_json(
