@@ -11,7 +11,7 @@ import spacy
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--comments_file', default=None, type=str, required=True, help='Comments file')
-parser.add_argument('--monthe', default=None, type=int, required=True, help='month')
+parser.add_argument('--month', default=None, type=int, required=True, help='month')
 parser.add_argument('--year', default=None, type=int, required=True, help='year')
 args = parser.parse_args()
 
