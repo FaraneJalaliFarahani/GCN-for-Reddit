@@ -11,8 +11,8 @@ import spacy
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--comments_file', default=None, type=str, required=True, help='Comments file')
-parser.add_argument('--month', default=None, type=int, required=True, help='month')
-parser.add_argument('--year', default=None, type=int, required=True, help='year')
+parser.add_argument('--month', default=None, type=str, required=True, help='month')
+parser.add_argument('--year', default=None, type=str, required=True, help='year')
 args = parser.parse_args()
 
 nlp = spacy.load("en_core_web_sm")
@@ -30,7 +30,7 @@ comments_file =args.comments_file
 
 #url = 'https://files.pushshift.io/reddit/submissions/RS_'+ args.year +'-'+ month +'.zst'
 #filename = wget.download(url)
-url = 'https://files.pushshift.io/reddit/comments/RC_'+ str(year) +'-'+ str(month) +'.zst'
+url = 'https://files.pushshift.io/reddit/comments/RC_'+ year +'-'+ month +'.zst'
 filename = wget.download(url)
 dict_concepts={}
 target_dir ="/content"
